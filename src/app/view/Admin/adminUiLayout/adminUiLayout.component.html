@@ -1,0 +1,98 @@
+<div class="h-[97.5vh] w-[97.5vw] flex p-0 m-0 relative">
+
+  <div class="w-[75%] lg:w-[20%] shadow  px-5 bg-[#f8fafc]  md:block" [@sidebarAnimation]="isSidebarOpen ? 'open' : 'closed'" [ngClass]="isSidebarOpen ? '' : 'absolute transition ease-in-out duration-300'">
+    <div class=" mb-5 flex justify-between items-center">
+			<h1 class="font-bold lg:text-2xl text-blue-400 text-sm">
+        Carpool Admin
+      </h1>
+      <p class="m-0 p-0 lg:hidden" (click)="toggleSidebar()">
+        <i class="fa-solid fa-bars text-[#1e293b] text-2xl"  ></i>
+        x
+      </p>
+		</div>
+    <aside>
+      <ul class="flex flex-col py-3 px-4 overflow-y-auto list-none" style="height: calc(100% - 140);">
+        <h1 class="text-left text-gray-400 text-sm px-4 w-full mb-6 ">MENU</h1>
+
+        @for (item of sidebarMenus; track item.title) {
+          @if (item.hasSubmenu) {
+            <li class="w-full">
+              <div
+                class="w-full flex items-center justify-between hover:bg-indigo-100 rounded-sm px-4 py-3 cursor-pointer" (click)="item.subMenuIsActive = !item.subMenuIsActive">
+                <div class="flex-1 text-sm lg:text-base flex items-center justify-start space-x-2 ">
+                  <i [ngClass]="item.iconClass"></i>
+                  <span > {{ item.title }} </span>
+                </div>
+
+                <i
+
+                  [ngClass]="{
+                    'fa-solid fa-chevron-down': item.subMenuIsActive,
+                    'fa-solid fa-chevron-right': !item.subMenuIsActive
+                  }"
+                ></i>
+              </div>
+
+              <ul class="w-full flex flex-col list-none" *ngIf="item.subMenuIsActive">
+                @for (el of item.submenus; track el.title) {
+                <li class="w-full">
+                  <a class="w-full h-full no-underline text-sm lg:text-base text-[#1e293b] hover:text-[#1d4ed8] hover:bg-indigo-100 rounded-sm lg:px-4 py-3 cursor-pointer flex items-center justify-start group lg:space-x-2 whitespace-nowrap"
+                    [routerLink]="el.path" routerLinkActive="link-active">
+                    <i class="fa-solid fa-caret-right"></i>
+
+                    <span> {{ el.title }} </span>
+                  </a>
+                </li>
+                }
+              </ul>
+
+            </li>
+          } @else {
+            <li class="w-full ">
+              <a class="w-full h-full text-sm lg:text-base text-[#1e293b] hover:text-[#1d4ed8] hover:bg-indigo-100 no-underline rounded-sm  lg:px-4 py-3 cursor-pointer flex items-center justify-start lg:space-x-2"
+                [routerLink]="item.path" routerLinkActive="link-active">
+                <i [ngClass]="item.iconClass "></i>
+                <span> {{ item.title }} </span>
+              </a>
+            </li>
+          }
+        }
+
+
+      </ul>
+    </aside>
+  </div>
+
+  <div class="w-[80%]" [ngClass]="isSidebarOpen ? '' : 'w-full '">
+    <div class="p-5 flex justify-between items-center" >
+      <div>
+          <i class="fa-solid fa-bars text-[#1e293b] text-2xl" [ngClass]="isSidebarOpen ? 'hidden' : 'block'"  (click)="toggleSidebar()"></i>
+          <p (click)="toggleSidebar()" [ngClass]="isSidebarOpen ? 'hidden lg:block' : 'block'">icon</p>
+      </div>
+      <div class="flex justify-between items-center">
+        <div>
+          <i class="fa-regular fa-bell mr-5 text-2xl"></i>
+        </div>
+        <div class="relative">
+          <div class="object-cover object-center w-10 h-10 rounded-full cursor-pointer" (click)="toggleList()">
+            <img alt="tania andrew" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" class="object-cover object-center w-10 h-10 rounded-full cursor-pointer" />
+          </div>
+          <ul [@listAnimation]="showList ? 'open' : 'closed'" class="absolute right-0 z-10 min-w-[180px] overflow-auto rounded-md border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none">
+            <li role="menuitem" class="block w-full cursor-pointer select-none rounded-md px-3 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+              Mon profil
+            </li>
+            <li role="menuitem" class="block w-full cursor-pointer select-none rounded-md px-3 pt-[9px] pb-2 text-start leading-tight transition-all hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900">
+              Deconnexion
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <main class="w-full flex-1 px-3 py-5">
+      <router-outlet></router-outlet>
+      <!--bg-gray-100 -->
+    </main>
+  </div>
+
+</div>
